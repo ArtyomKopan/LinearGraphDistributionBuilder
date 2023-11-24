@@ -16,6 +16,7 @@ object LinearGraphDiagramBuilder {
             val nonterminal = rule.key
             val expression = rule.value
             val rpnExp = ReversePolishNotation.convert(expression)
+            println(rpnExp) // для отладки
             val calculator = ReversePolishNotationCalculator(::convertNode, ::calculateNodes)
             val diagramObject = ReversePolishNotation.calculate(rpnExp, calculator)
             val linearDiagram = diagramObject.getResultValue(currentResultDiagramLength, nonterminal)
@@ -35,7 +36,7 @@ object LinearGraphDiagramBuilder {
             ',' -> LinearGraphDiagram(LinearGraphDiagramType.AND, x, y)
             ';' -> LinearGraphDiagram(LinearGraphDiagramType.OR, x, y)
             '#' -> LinearGraphDiagram(LinearGraphDiagramType.LOOP, x, y)
-            else -> throw IllegalArgumentException("Недопустимая операция: ${operation}")
+            else -> throw IllegalArgumentException("Недопустимая операция: $operation")
         }
 
     private fun convertNode(value: String): LinearGraphDiagram {
@@ -44,7 +45,7 @@ object LinearGraphDiagramBuilder {
     }
 
     private fun replaceNonterminalsToIndices(diagram: Array<String>, nonterminalStartIndices: Map<String, Int>): Array<String> {
-        for (i in 0..<diagram.size) {
+        for (i in diagram.indices) {
             if (diagram[i] == "*" && i < diagram.size - 1) {
                 val nonterminal = diagram[i + 1]
                 diagram[i + 1] = nonterminalStartIndices[nonterminal].toString()

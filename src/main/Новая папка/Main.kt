@@ -42,6 +42,7 @@ fun main(args: Array<String>) {
     val diagram = LinearGraphDiagramBuilder.build(grammar)
 
     println("Линейное представление грамматики: ")
+    printTable(diagram)
 }
 
 fun readGrammarFromConsole(): List<String>? {

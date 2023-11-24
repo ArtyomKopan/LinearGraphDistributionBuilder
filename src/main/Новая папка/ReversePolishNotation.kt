@@ -1,5 +1,7 @@
 package lgdb
 
+import java.util.Stack
+
 
 object ReversePolishNotation {
     private class ExpressionTreeNode(
@@ -8,45 +10,67 @@ object ReversePolishNotation {
     ) {
         var leftNode: ExpressionTreeNode? = null
         var rightNode: ExpressionTreeNode? = null
-    }
 
-    private val SUPPORTED_OPERATORS = "(),;#"
-
-    fun convert(expression: String): String {
-        if (expression.isEmpty()) {
-            throw IllegalArgumentException("The expression is empty")
+        fun printExpressionTree(spacesCount: Int = 0) {
+            val startString = StringBuilder()
+            (1..spacesCount).forEach { startString.append("_") }
+            println(startString.toString() + this.toString())
+            startString.append("__")
+            leftNode ?: println(startString.toString())
+            leftNode?.printExpressionTree(spacesCount + 2)
+            rightNode ?: println(startString.toString())
+            rightNode?.printExpressionTree(spacesCount + 2)
         }
 
-        val items = mutableListOf<String>()
+        override fun toString() =
+            "ExpressionTreeNode(" +
+                    "weight=$weight, " +
+                    "value='$value'" +
+                    ")"
+    }
+
+    private const val SUPPORTED_OPERATORS = "(),;#"
+
+    // TODO: этот метод работает неправильно, возвращает пустую строку
+    fun convert(expression: String): String {
+        if (expression.isEmpty()) {
+            throw IllegalArgumentException("Выражение пусто")
+        }
+
+        var items = listOf<String>()
         val expressionItems = splitExpression(expression)
 
+        // TODO: проблема в этих двух строках
         val rootNode = buildExpressionTree(expressionItems)
-        traverseExpressionTree(items, rootNode)
+        rootNode?.printExpressionTree(0)
+        println(items) // для отладки
+        items = traverseExpressionTree(items, rootNode)
+        println(items) // для отладки
 
         val builder = StringBuilder()
         (0..<items.size - 1).forEach { builder.append(items[it] + " ") }
 
-        return if (items.size == 0)
+        return if (items.isEmpty())
             builder.toString()
-        else builder.append(items.last).toString()
+        else builder.append(items.last()).toString()
     }
 
     fun <T> calculate(rpnExpression: String, rpnCalculator: ReversePolishNotationCalculator<T>): T {
-        val buffer = ArrayDeque<T>()
+        val buffer = Stack<T>()
         val data = rpnExpression.split(" ").filter { it.isNotBlank() }
 
         for (currentValue in data) {
             if (currentValue.length == 1 && currentValue[0] in SUPPORTED_OPERATORS) {
-                val secondValue = buffer.removeLast()
-                val firstValue = buffer.removeLast()
+                val secondValue = buffer.pop()
+                val firstValue = buffer.pop()
                 val result = rpnCalculator.calculate(firstValue, secondValue, currentValue[0])
-                buffer.add(result)
+                buffer.push(result)
             } else {
-                buffer.add(rpnCalculator.convert(currentValue))
+                buffer.push(rpnCalculator.convert(currentValue))
             }
         }
 
-        return buffer.removeLast()
+        return buffer.pop()
     }
 
     private fun splitExpression(expression: String): List<String> {
@@ -74,37 +98,58 @@ object ReversePolishNotation {
 
     private fun buildExpressionTree(expressionItems: List<String>): ExpressionTreeNode? {
         var currentWeight = 0
-        val nodesStack = ArrayDeque<ExpressionTreeNode>()
+        val nodesStack = Stack<ExpressionTreeNode>()
 
         for (item in expressionItems) {
-            when (item) {
-                "(" -> currentWeight += 10
-                ")" -> currentWeight -= 10
-                else -> {
-                    val weight = getWeight(currentWeight, item)
-                    val node = ExpressionTreeNode(weight, item)
-
-                    while (nodesStack.isNotEmpty() && node.weight <= nodesStack.last.weight) {
-                        node.leftNode = nodesStack.removeLast()
-                    }
-
-                    if (nodesStack.isNotEmpty()) {
-                        val lastNode = nodesStack.removeLast()
-                        lastNode.rightNode = node
-                        nodesStack.add(node)
-                    }
-                }
+            if (item == "(") {
+                currentWeight += 10
+                continue
             }
+
+            if (item == ")") {
+                currentWeight -= 10
+                continue
+            }
+
+            val weight = getWeight(currentWeight, item)
+            val node = ExpressionTreeNode(weight, item)
+
+            while (nodesStack.isNotEmpty() && node.weight <= nodesStack.peek().weight) {
+                node.leftNode = nodesStack.pop()
+            }
+
+            if (nodesStack.isNotEmpty()) {
+                nodesStack.peek().rightNode = node
+            }
+
+            nodesStack.push(node)
         }
 
-        return nodesStack.removeFirstOrNull()
+        if (nodesStack.isEmpty()) {
+            return null
+        }
+
+        var output = nodesStack.pop()
+
+        while (nodesStack.isNotEmpty()) {
+            output = nodesStack.pop()
+        }
+
+        return output
     }
 
-    private fun traverseExpressionTree(currentItems: MutableList<String>, currentNode: ExpressionTreeNode?) {
-        currentNode ?: return
-        traverseExpressionTree(currentItems, currentNode.leftNode)
-        traverseExpressionTree(currentItems, currentNode.rightNode)
-        currentItems.add(currentNode.value)
+    private fun traverseExpressionTree(currentItems: List<String>, currentNode: ExpressionTreeNode?): List<String> {
+        if (currentNode == null) {
+            return emptyList()
+        }
+
+        val resultItemsList = mutableListOf<String>()
+
+        resultItemsList.addAll(traverseExpressionTree(currentItems, currentNode.leftNode))
+        resultItemsList.addAll(traverseExpressionTree(currentItems, currentNode.rightNode))
+        resultItemsList.add(currentNode.value)
+
+        return resultItemsList.toList()
     }
 
     private fun getWeight(currentWeight: Int, value: String) = when (value) {
