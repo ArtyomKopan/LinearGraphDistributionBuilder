@@ -82,7 +82,7 @@ class LinearGraphDiagram private constructor(
                 val rightValueIndex = startIndex + leftValue.size + 4
                 orValue.add(rightValueIndex.toString())
                 orValue.addAll(leftValue)
-                orValue.add("|")
+                orValue.add("↓")
                 val orEndIndex = startIndex + leftValue.size + rightValue.size + 4
                 orValue.add(orEndIndex.toString())
                 orValue.addAll(rightValue)

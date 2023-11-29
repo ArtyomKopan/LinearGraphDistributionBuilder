@@ -31,7 +31,6 @@ object ReversePolishNotation {
 
     private const val SUPPORTED_OPERATORS = "(),;#"
 
-    // TODO: дерево строится правильное, теперь ошибка непонятно где
     fun convert(expression: String): String {
         if (expression.isEmpty()) {
             throw IllegalArgumentException("Выражение пусто")
@@ -41,7 +40,7 @@ object ReversePolishNotation {
         val expressionItems = splitExpression(expression)
 
         val rootNode = buildExpressionTree(expressionItems)
-        rootNode?.printExpressionTree(0)
+//        rootNode?.printExpressionTree(0)
 //        println(items) // для отладки
         items = traverseExpressionTree(items, rootNode)
 //        println(items) // для отладки
