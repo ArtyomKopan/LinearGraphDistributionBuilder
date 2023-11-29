@@ -10,7 +10,7 @@ class EmptyTerminalTests {
     fun test1() {
         val grammar = mapOf("S" to "b,a#_")
 
-        val expected = arrayOf(":", "b", "a", "<", "2", ".(S)")
+        val expected = arrayOf(":", "b", "a", "<", "7", "|", "2", ".(S)")
         val actual = LinearGraphDiagramBuilder.build(grammar)
         assertEquals(expected.toList(), actual)
     }
@@ -28,7 +28,7 @@ class EmptyTerminalTests {
     fun test3() {
         val grammar = mapOf("S" to "b,_;a")
 
-        val expected = arrayOf(":", "b", "<", "5", "a", ".(S)")
+        val expected = arrayOf(":", "b", "<", "6", "|", "7", "a", ".(S)")
         val actual = LinearGraphDiagramBuilder.build(grammar)
         assertEquals(expected.toList(), actual)
     }
