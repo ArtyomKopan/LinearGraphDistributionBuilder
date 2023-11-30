@@ -1,10 +1,13 @@
 name: simple CI
 on: [push, pull_request]
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Set up JDK
         uses: actions/setup-java@v2
@@ -12,11 +15,8 @@ jobs:
           distribution: 'adopt'
           java-version: '18'
 
-      - name: Run build
-        run: ./gradlew build
+      - name: Run Maven Build
+        run: mvn clean install
 
-      - name: Run tests
-        run: ./gradlew test
-
-      - name: Run detekt
-        run: ./gradlew detekt
+      - name: Run Maven Tests
+        run: mvn test
