@@ -35,7 +35,7 @@ object LinearGraphDiagramBuilder {
         when (operation) {
             ',' -> LinearGraphDiagram(LinearGraphDiagramType.AND, x, y)
             ';' -> LinearGraphDiagram(LinearGraphDiagramType.OR, x, y)
-            '#' -> LinearGraphDiagram(LinearGraphDiagramType.LOOP, x, y)
+            '#' -> LinearGraphDiagram(LinearGraphDiagramType.ITERATION, x, y)
             else -> throw IllegalArgumentException("Недопустимая операция: $operation")
         }
 

@@ -63,7 +63,7 @@ class LinearGraphDiagram private constructor(
                 orValue.toTypedArray()
             }
 
-            LinearGraphDiagramType.LOOP -> {
+            LinearGraphDiagramType.ITERATION -> {
                 leftValue = left!!.getValue(startIndex)
                 rightValue = right!!.getValue(startIndex + leftValue.size + 2)
                 if (leftValue.isEmpty()) {
