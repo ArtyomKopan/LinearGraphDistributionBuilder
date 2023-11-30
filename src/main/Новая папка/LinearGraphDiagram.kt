@@ -95,7 +95,7 @@ class LinearGraphDiagram private constructor(
                 if (leftValue.isEmpty()) {
                     val loopValueLeftEmpty = mutableListOf("<", (startIndex + rightValue.size + 4).toString())
                     loopValueLeftEmpty.addAll(rightValue)
-                    loopValueLeftEmpty.add("|")
+                    loopValueLeftEmpty.add("↓")
                     loopValueLeftEmpty.add(startIndex.toString())
                     loopValueLeftEmpty.toTypedArray()
                 }
@@ -114,7 +114,7 @@ class LinearGraphDiagram private constructor(
                 val loopEndIndex = startIndex + leftValue.size + rightValue.size + 4
                 loopValue.add(loopEndIndex.toString())
                 loopValue.addAll(rightValue)
-                loopValue.add("|")
+                loopValue.add("↓")
                 loopValue.add(startIndex.toString())
                 loopValue.toTypedArray()
             }
