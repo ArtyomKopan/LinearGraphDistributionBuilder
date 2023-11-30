@@ -6,9 +6,8 @@ object GrammarParser {
 
         for (line in data) {
             val parts = line.split(":").map { it.trim() }
-            if (parts.size != 2) {
-                throw IllegalArgumentException("Некорректный формат ввода грамматики!")
-            }
+
+            require(parts.size == 2) { "Некорректный формат ввода грамматики!" }
 
             val nonterminal = parts[0]
             val regex = if (parts[1].endsWith('.'))

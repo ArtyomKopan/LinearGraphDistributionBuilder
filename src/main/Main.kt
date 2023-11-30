@@ -1,6 +1,5 @@
 package lgdb
 
-import java.io.FileNotFoundException
 import java.nio.file.Files
 import kotlin.io.path.Path
 import kotlin.math.ceil
@@ -48,7 +47,7 @@ fun main(args: Array<String>) {
         (0..9).map { it.toString() },
         (0..<nRows).map { it.toString() }
     )
-    diagram.forEach { print("$it ") }
+    // diagram.forEach { print("$it ") }
 }
 
 fun readGrammarFromConsole(): List<String> {
@@ -75,7 +74,7 @@ fun readGrammarFromFile(path: String): List<String>? =
     try {
         val grammarData = Files.readAllLines(Path(path))
         grammarData
-    } catch (e: FileNotFoundException) {
+    } catch (e: NoSuchFileException) {
         println("Файл не найден!")
         null
     }
