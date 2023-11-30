@@ -8,33 +8,7 @@ class LinearGraphDiagram private constructor(
 ) {
     companion object {
         private const val EMPTY_VALUE = "_"
-
-        fun createValue(value: String?, isNonterminal: Boolean = false): LinearGraphDiagram {
-            val diagramType = if (isNonterminal) LinearGraphDiagramType.NEW_DIAGRAM else LinearGraphDiagramType.VALUE
-            return LinearGraphDiagram(null, null, diagramType, if (value != EMPTY_VALUE) value else null)
-        }
     }
-
-    constructor(type: LinearGraphDiagramType, left: String, right: String) : this(
-        LinearGraphDiagram.createValue(left),
-        LinearGraphDiagram.createValue(right),
-        type,
-        null
-    )
-
-    constructor(type: LinearGraphDiagramType, left: String, right: LinearGraphDiagram) : this(
-        LinearGraphDiagram.createValue(left),
-        right,
-        type,
-        null
-    )
-
-    constructor(type: LinearGraphDiagramType, left: LinearGraphDiagram, right: String) : this(
-        left,
-        LinearGraphDiagram.createValue(right),
-        type,
-        null
-    )
 
     constructor(type: LinearGraphDiagramType, left: LinearGraphDiagram, right: LinearGraphDiagram) : this(
         left,
@@ -155,12 +129,7 @@ class LinearGraphDiagram private constructor(
         return getValue().joinToString(" ")
     }
 
-
     fun equals(left: LinearGraphDiagram?, right: LinearGraphDiagram?): Boolean {
         return left == right
-    }
-
-    fun notEquals(left: LinearGraphDiagram?, right: LinearGraphDiagram?): Boolean {
-        return left != right
     }
 }
