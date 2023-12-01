@@ -26,8 +26,10 @@ class SingleNonterminalTest {
     fun test3() {
         val grammar = mapOf("S" to "a#b#c#d,a")
 
-        val expected = arrayOf(":", "a", "<", "7", "b", "↓", "1", "<", "12", "c", "↓", "1", "<", "17", "d",
-            "↓", "1", "a", ".(S)")
+        val expected = arrayOf(
+            ":", "a", "<", "7", "b", "↓", "1", "<", "12", "c", "↓", "1", "<", "17", "d",
+            "↓", "1", "a", ".(S)"
+        )
         val actual = LinearGraphDiagramBuilder.build(grammar)
         Assertions.assertEquals(expected.toList(), actual)
     }
