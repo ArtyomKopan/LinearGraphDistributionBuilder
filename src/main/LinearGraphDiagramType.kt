@@ -4,7 +4,7 @@ package lgdb
 enum class LinearGraphDiagramType {
     OR,
     AND,
-    LOOP,
+    ITERATION,
     VALUE,
     NEW_DIAGRAM
 }

@@ -31,7 +31,6 @@ object ReversePolishNotation {
 
     private const val SUPPORTED_OPERATORS = "(),;#"
 
-    // TODO: этот метод работает неправильно, возвращает пустую строку
     fun convert(expression: String): String {
         if (expression.isEmpty()) {
             throw IllegalArgumentException("Выражение пусто")
@@ -40,12 +39,8 @@ object ReversePolishNotation {
         var items = listOf<String>()
         val expressionItems = splitExpression(expression)
 
-        // TODO: проблема в этих двух строках
         val rootNode = buildExpressionTree(expressionItems)
-        rootNode?.printExpressionTree(0)
-        println(items) // для отладки
         items = traverseExpressionTree(items, rootNode)
-        println(items) // для отладки
 
         val builder = StringBuilder()
         (0..<items.size - 1).forEach { builder.append(items[it] + " ") }
@@ -101,12 +96,12 @@ object ReversePolishNotation {
         val nodesStack = Stack<ExpressionTreeNode>()
 
         for (item in expressionItems) {
-            if (item == "(") {
+            if (item == "( ") {
                 currentWeight += 10
                 continue
             }
 
-            if (item == ")") {
+            if (item == ") ") {
                 currentWeight -= 10
                 continue
             }
@@ -114,12 +109,14 @@ object ReversePolishNotation {
             val weight = getWeight(currentWeight, item)
             val node = ExpressionTreeNode(weight, item)
 
-            while (nodesStack.isNotEmpty() && node.weight <= nodesStack.peek().weight) {
+            while (nodesStack.isNotEmpty() && (node.weight <= nodesStack.peek().weight)) {
                 node.leftNode = nodesStack.pop()
             }
 
             if (nodesStack.isNotEmpty()) {
-                nodesStack.peek().rightNode = node
+                val element = nodesStack.pop()
+                element.rightNode = node
+                nodesStack.push(element)
             }
 
             nodesStack.push(node)
@@ -153,9 +150,9 @@ object ReversePolishNotation {
     }
 
     private fun getWeight(currentWeight: Int, value: String) = when (value) {
-        "," -> currentWeight + 1
-        "#" -> currentWeight + 2
-        ";" -> currentWeight + 3
+        ", " -> currentWeight + 1
+        "# " -> currentWeight + 2
+        "; " -> currentWeight + 3
         else -> Int.MAX_VALUE
     }
 }

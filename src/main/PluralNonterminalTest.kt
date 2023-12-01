@@ -12,7 +12,7 @@ class PluralNonterminalTest {
             "B" to "a"
         )
 
-        val expected = arrayOf(":", "<", "15", "a", "<", "11", "a", "*", "1", "|", "12", "a", "a", "|", "19", "a",
+        val expected = arrayOf(":", "<", "15", "a", "<", "11", "a", "*", "1", "↓", "12", "a", "a", "↓", "19", "a",
             "*", "20", "a", ".(S)", "a", ".(B)")
         val actual = LinearGraphDiagramBuilder.build(grammar)
         Assertions.assertEquals(expected.toList(), actual)
@@ -25,8 +25,8 @@ class PluralNonterminalTest {
             "B" to "f;g"
         )
 
-        val expected = arrayOf(":", "<", "15", "a", "<", "11", "a", "*", "1", "|", "12", "a", "a", "|", "19", "a",
-            "*", "22", "a", "f", "g", ".(S)", "<", "27", "f", "|", "28", "g", ".(B)")
+        val expected = arrayOf(":", "<", "15", "a", "<", "11", "a", "*", "1", "↓", "12", "a", "a", "↓", "19", "a",
+            "*", "22", "a", "f", "g", ".(S)", "<", "27", "f", "↓", "28", "g", ".(B)")
         val actual = LinearGraphDiagramBuilder.build(grammar)
         Assertions.assertEquals(expected.toList(), actual)
     }
@@ -40,8 +40,8 @@ class PluralNonterminalTest {
             "Q" to "a,(Q;q)"
         )
 
-        val expected = arrayOf(":", "<", "9", "*", "18", "*", "20", "|", "12", "*", "13", "b", ".(S)", "*", "18", "*",
-            "20", ".(B)", "a", ".(A)", "a", "<", "27", "*", "20", "|", "28", "q", ".(Q)")
+        val expected = arrayOf(":", "<", "9", "*", "18", "*", "20", "↓", "12", "*", "13", "b", ".(S)", "*", "18", "*",
+            "20", ".(B)", "a", ".(A)", "a", "<", "27", "*", "20", "↓", "28", "q", ".(Q)")
         val actual = LinearGraphDiagramBuilder.build(grammar)
         Assertions.assertEquals(expected.toList(), actual)
     }

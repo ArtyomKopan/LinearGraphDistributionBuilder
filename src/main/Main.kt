@@ -1,10 +1,8 @@
 package lgdb
 
-import java.io.FileNotFoundException
 import java.nio.file.Files
 import kotlin.io.path.Path
 import kotlin.math.ceil
-import kotlin.math.max
 
 fun main(args: Array<String>) {
     val grammarData: List<String>?
@@ -42,10 +40,17 @@ fun main(args: Array<String>) {
     val diagram = LinearGraphDiagramBuilder.build(grammar)
 
     println("Линейное представление грамматики: ")
-    printTable(diagram)
+    val nRows = ceil(diagram.size.toDouble() / 10).toInt()
+    ConsoleTable.printTable(
+        diagram,
+        10,
+        (0..9).map { it.toString() },
+        (0..<nRows).map { it.toString() }
+    )
+    // diagram.forEach { print("$it ") }
 }
 
-fun readGrammarFromConsole(): List<String>? {
+fun readGrammarFromConsole(): List<String> {
     print("Введите количество правил в грамматике: ")
     val n = readln().toInt()
     println("Введите описание грамматики в следующем виде: ")
@@ -69,49 +74,7 @@ fun readGrammarFromFile(path: String): List<String>? =
     try {
         val grammarData = Files.readAllLines(Path(path))
         grammarData
-    } catch (e: FileNotFoundException) {
+    } catch (e: NoSuchFileException) {
         println("Файл не найден!")
         null
     }
-
-fun printTable(diagram: List<String>) {
-    val rowsCount = ceil(diagram.size.toFloat() / 10).toInt()
-    var cnt = 0
-
-    val headers = (0..9).toList()
-    val data = mutableListOf<MutableList<String>>()
-
-    for (i in 1..rowsCount) {
-        data.add(mutableListOf())
-        if (i != rowsCount) {
-            for (j in 1..10) {
-                data[i][j] = diagram[cnt++]
-            }
-        } else {
-            while (cnt < diagram.size) {
-                data[i].add(diagram[cnt++])
-            }
-            for (j in 1..(10 - diagram.size % 10)) {
-                data[i].add(" ")
-            }
-        }
-    }
-
-    printRow(headers)
-
-    println("-".repeat(max(diagram.size.toString().length,
-        diagram.maxOf { it.length }) + 3
-    )
-    )
-
-    for (row in data) {
-        printRow(row)
-    }
-}
-
-fun printRow(row: List<Any>) {
-    for (item in row) {
-        print("| ${item.toString().padEnd(15)} ")
-    }
-    println("|")
-}
