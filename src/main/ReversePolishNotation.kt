@@ -40,10 +40,7 @@ object ReversePolishNotation {
         val expressionItems = splitExpression(expression)
 
         val rootNode = buildExpressionTree(expressionItems)
-//        rootNode?.printExpressionTree(0)
-//        println(items) // для отладки
         items = traverseExpressionTree(items, rootNode)
-//        println(items) // для отладки
 
         val builder = StringBuilder()
         (0..<items.size - 1).forEach { builder.append(items[it] + " ") }
@@ -118,7 +115,6 @@ object ReversePolishNotation {
 
             if (nodesStack.isNotEmpty()) {
                 val element = nodesStack.pop()
-//                nodesStack.peek().rightNode = node
                 element.rightNode = node
                 nodesStack.push(element)
             }
