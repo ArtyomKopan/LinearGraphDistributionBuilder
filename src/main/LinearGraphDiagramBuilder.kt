@@ -16,7 +16,6 @@ object LinearGraphDiagramBuilder {
             val nonterminal = rule.key
             val expression = rule.value
             val rpnExp = ReversePolishNotation.convert(expression)
-            // println(rpnExp) // для отладки
             val calculator = ReversePolishNotationCalculator(::convertNode, ::calculateNodes)
             val diagramObject = ReversePolishNotation.calculate(rpnExp, calculator)
             val linearDiagram = diagramObject.getResultValue(currentResultDiagramLength, nonterminal)

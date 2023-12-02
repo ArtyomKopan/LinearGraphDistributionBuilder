@@ -67,30 +67,30 @@ class LinearGraphDiagram private constructor(
                 leftValue = left!!.getValue(startIndex)
                 rightValue = right!!.getValue(startIndex + leftValue.size + 2)
                 if (leftValue.isEmpty()) {
-                    val loopValueLeftEmpty = mutableListOf("<", (startIndex + rightValue.size + 4).toString())
-                    loopValueLeftEmpty.addAll(rightValue)
-                    loopValueLeftEmpty.add("↓")
-                    loopValueLeftEmpty.add(startIndex.toString())
-                    loopValueLeftEmpty.toTypedArray()
+                    val iterationValueLeftEmpty = mutableListOf("<", (startIndex + rightValue.size + 4).toString())
+                    iterationValueLeftEmpty.addAll(rightValue)
+                    iterationValueLeftEmpty.add("↓")
+                    iterationValueLeftEmpty.add(startIndex.toString())
+                    iterationValueLeftEmpty.toTypedArray()
                 }
 
                 if (rightValue.isEmpty()) {
-                    val loopValueRightEmpty = mutableListOf<String>()
-                    loopValueRightEmpty.addAll(leftValue)
-                    loopValueRightEmpty.add("<")
-                    loopValueRightEmpty.add(startIndex.toString())
-                    loopValueRightEmpty.toTypedArray()
+                    val iterationValueRightEmpty = mutableListOf<String>()
+                    iterationValueRightEmpty.addAll(leftValue)
+                    iterationValueRightEmpty.add("<")
+                    iterationValueRightEmpty.add(startIndex.toString())
+                    iterationValueRightEmpty.toTypedArray()
                 }
 
-                val loopValue = mutableListOf<String>()
-                loopValue.addAll(leftValue)
-                loopValue.add("<")
-                val loopEndIndex = startIndex + leftValue.size + rightValue.size + 4
-                loopValue.add(loopEndIndex.toString())
-                loopValue.addAll(rightValue)
-                loopValue.add("↓")
-                loopValue.add(startIndex.toString())
-                loopValue.toTypedArray()
+                val iterationValue = mutableListOf<String>()
+                iterationValue.addAll(leftValue)
+                iterationValue.add("<")
+                val iterationEndIndex = startIndex + leftValue.size + rightValue.size + 4
+                iterationValue.add(iterationEndIndex.toString())
+                iterationValue.addAll(rightValue)
+                iterationValue.add("↓")
+                iterationValue.add(startIndex.toString())
+                iterationValue.toTypedArray()
             }
 
             else -> throw NotImplementedError()
